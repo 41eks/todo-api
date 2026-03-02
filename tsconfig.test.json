@@ -1,0 +1,14 @@
+
+{
+  "extends": "./tsconfig.json", // 继承基础配置
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"], // 显式引入测试相关的全局类型
+    "noEmit": true,                      // 关键：测试配置只负责类型检查，不生成任何文件
+    "allowJs": true                      // 如果你的测试包含 .js 文件，可以开启
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "vitest.config.ts"                   // 包含配置文件本身的类型检查
+  ]
+}

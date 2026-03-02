@@ -1,0 +1,55 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    // "outDir": "./dist",
+    // "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    // Environment Settings
+    // See also https://aka.ms/tsconfig/module
+    // "module": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es2020",
+    // "lib": ["es2023"],
+    // "moduleResolution": "node",
+    "types": ["node", "vitest/globals", "cookie-parser"],
+    // For nodejs:
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // and npm install -D @types/node
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    // "exactOptionalPropertyTypes": true,
+
+    // Style Options
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // Recommended Options
+    "strict": true, // 严格模式
+    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "outDir": "./dist", // 📌编译后输出到 dist
+    "rootDir": "./src", // 📌限制输入文件根目录，避免乱生成层级
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"] /* 告诉 tsc 哪些文件需要编译 */,
+  "exclude": ["node_modules", "dist", "tests"]
+}

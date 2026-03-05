@@ -10,10 +10,10 @@ services:
       # --- 关键修改：映射数据库文件 ---
       # 左边是宿主机目录 (确保这个文件存在，或者让 Docker 自动创建)
       # 右边是容器内定义的 dbCredentials.url 路径
-      - ./data/sqlite.db:/app/sqlite.db
+      - ../data/sqlite.db:/app/sqlite.db
       # ------------------------------
       # 可选：映射日志和上传目录，保持数据持久化
-      - ./data/logs:/app/logs
+      - ../data/logs:/app/logs
     environment:
       - NODE_ENV=production
       - ACCESS_SECRET="KFC-CRAZY-THURSDAY-VME50"

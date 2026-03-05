@@ -35,12 +35,18 @@ WORKDIR /app
 # 只复制必要文件
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+# migrator
+COPY --from=builder /app/drizzle ./drizzle
 
 COPY package.json pnpm-lock.yaml ./
 
 
 # 创建必要的目录
 RUN mkdir -p logs 
+
+
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
 # RUN addgroup -g 1001 -S nodejs && \
 #     adduser -S nodejs -u 1001 && \
@@ -55,7 +61,5 @@ USER nodejs
 
 EXPOSE 3000
 
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
 
 CMD ["./entrypoint.sh"]

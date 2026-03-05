@@ -31,7 +31,7 @@ export function refreshController(req: Request, res: Response) {
         res.cookie("refreshToken", newRefreshToken, {
             httpOnly: true,          // JS 无法读取（防 XSS）
             secure: process.env.NODE_ENV === "production", // 生产必须 https
-            sameSite: "strict",      // 防 CSRF
+            sameSite: "none", //前后端跨域     // 防 CSRF
             maxAge: 24 * 60 * 60 * 1000, // 1天,
             path: "/api/refresh"              // ✅ 浏览器只在请求该路径时才携带此 cookie
         });

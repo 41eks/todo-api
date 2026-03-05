@@ -37,5 +37,15 @@ export async function findUserByName(username: string) {
     return { id: user.id, username: user.username, password: user.password };
 }
 
-// 示例用法:
-// findUserForLogin('testuser', 'plain_text_password_123');
+export async function findUserById(id: number) {
+    // 1. 根据用户名查找用户
+    const user = await db.select().from(users).where(eq(users.id, id)).get();
+    // const user = result[0];
+
+    if (!user) {
+        console.log('用户不存在');
+        return null;
+    }
+    // 返回用户信息（通常不返回密码）
+    return { id: user.id, username: user.username, password: user.password };
+}

@@ -16,7 +16,8 @@ services:
       - ./data/logs:/app/logs
     environment:
       - NODE_ENV=production
-    # --- 关键修改：启动时执行迁移 ---
-    command: sh -c "pnpm drizzle-kit push && node dist/server.js"
+      - ACCESS_SECRET="KFC-CRAZY-THURSDAY-VME50"
+      - REFRESH_SECRET="KFC-CRAZY-THURSDAY-VME50"
+
     # -----------------------------
     restart: always

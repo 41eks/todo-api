@@ -22,7 +22,7 @@ import { refreshController } from './controller/refreshController.js';
 import { logout } from './controller/logout.js';
 app.use(cookieParser());
 app.use(express.json()); // 支持 JSON 体
-app.use(cors())
+// app.use(cors())  在nginx配置
 app.post("/api/register", createUserController)
 app.post("/api/login", validate(LoginSchema, 'body'), loginController);
 app.post("/api/refresh", refreshController);

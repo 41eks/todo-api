@@ -14,6 +14,6 @@ router.post('/todos', todoController.create);
 router.get('/todos', todoController.getAll);
 router.put('/todos/:id', todoController.update);
 router.delete('/todos/:id', todoController.delete);
-router.get('/users/:id', userController.getUserProfile);
+router.get('/users/me', userController.getUserProfile);
 
 export default router;

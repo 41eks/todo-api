@@ -1,6 +1,5 @@
 services:
-  app:
-    # 假设你的镜像名字叫 todo-app
+  todo-app:
     image: ghcr.io/41eks/todo-api:latest
     build: .
     container_name: todo-container
@@ -21,3 +20,17 @@ services:
 
     # -----------------------------
     restart: always
+
+# Watchtower 服务
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # 必须挂载，用于控制其他容器
+      - /root/.docker/config.json:/config.json:ro  # 如果是私有仓库，需要挂载认证文件
+    command: 
+      - --interval 30           # 每 30 秒检查一次更新（生产环境建议设长一点，如 3600）
+      - --cleanup               # 更新后自动删除旧镜像，释放磁盘空间
+      - --label-enable          # 建议开启：只更新带有特定标签的容器
+

@@ -13,4 +13,10 @@ ORM->Drizzle
 框架->Express
 测试->Vitest
 
-docker run -d --name myapp -p 8000:3000 todo
+mkdir -p todo/{conf,data} 
+mkdir -p todo/data/logs
+touch todo/data/sqlite.db
+sudo chown -R 1001:1001 todo/data
+cd todo/conf
+docker compose up -d 
+

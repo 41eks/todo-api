@@ -5,6 +5,7 @@ import unless from 'express-unless'; // Import the express-unless package
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import { refreshTokenCookieOptions, csrfTokenCookieOptions, setAuthCookies } from './cookieSetting.js';
 const accessSecretKey = process.env.ACCESS_SECRET!;
 const refreshSecretKey = process.env.REFRESH_SECRET!;
 
@@ -37,14 +38,7 @@ export async function loginController(req: Request, res: Response) {
             { expiresIn: "1d" }
         );
 
-
-        // ✅ 3️⃣ 写入 cookie（httpOnly）
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,          // JS 无法读取（防 XSS）
-            secure: process.env.NODE_ENV === "production", // 生产必须 https
-            sameSite: "strict",      // 防 CSRF
-            maxAge: 24 * 60 * 60 * 1000 // 1天
-        });
+        const csrfToken = setAuthCookies(res, refreshToken);
         return res.json({
             status: 200,
             message: "login success",
@@ -65,3 +59,4 @@ export async function loginController(req: Request, res: Response) {
         });
     }
 }
+

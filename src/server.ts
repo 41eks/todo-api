@@ -1,12 +1,25 @@
 
 import { app } from './app.js';
+import { getRedisClient, closeRedis } from './db/redisClient.js';
 const port = process.env.EXPRESS_PORT ?? 3000
-app.listen(port, () => {
+const server = app.listen(port, async () => {
     console.log(`Server running at http://localhost:${port}`);
+    await getRedisClient()
 });
 
-// 应用退出时关闭
-process.on('SIGINT', async () => {
-    // await client.close();
-    process.exit(0);
-});
+
+
+async function shutdown(): Promise<void> {
+    console.log("Shutting down server...");
+
+    server.close(async () => {
+        console.log("HTTP server closed");
+
+        await closeRedis();
+
+        process.exit(0);
+    });
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);

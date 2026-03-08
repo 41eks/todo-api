@@ -20,12 +20,13 @@ export const app: Application = express();
 import cookieParser from "cookie-parser";
 import { refreshController } from './controller/refreshController.js';
 import { logout } from './controller/logout.js';
+import { validateRefreshRequest } from './middleware/refreshAuth.middleware.js';
 app.use(cookieParser());
 app.use(express.json()); // 支持 JSON 体
 // app.use(cors())  在nginx配置
 app.post("/api/register", createUserController)
 app.post("/api/login", validate(LoginSchema, 'body'), loginController);
-app.post("/api/refresh", refreshController);
+app.post("/api/refresh",validateRefreshRequest, refreshController);
 app.post("/api/auth/logout", logout)
 // 2. 挂载你定义的 router（适合模块化业务）
 // 所有 todoRouter 里的路径都会自动加上 /api 前缀

@@ -29,15 +29,7 @@ export function refreshController(req: Request, res: Response) {
             { expiresIn: "1d" }
         );
         const csrfToken = setAuthCookies(res, newRefreshToken);
-        // // ✅ 3️⃣ 写入 cookie（httpOnly）
-        // res.cookie("refreshToken", newRefreshToken, refreshTokenCookieOptions);
-        //  //影子令牌，判断登录状态
-        // res.cookie("refreshTokenIsValid", "true", csrfTokenCookieOptions);
 
-        // // ✅ 生成 CSRF token（随机 32 字节）
-        // const csrfToken = crypto.randomBytes(32).toString("hex");
-        // // csrfToken —— 故意不设 httpOnly，让 JS 能读取后放进请求头
-        // res.cookie("csrfToken", csrfToken,csrfTokenCookieOptions );
 
         return res.json({
             status: 200,

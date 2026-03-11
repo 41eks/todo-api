@@ -1,0 +1,48 @@
+
+services:
+  todo-app:
+    image: ghcr.io/41eks/todo-api:latest
+    container_name: todo-container
+    ports:
+      - "8000:3000"
+    volumes:
+      - ./sqlite.db:/app/sqlite.db
+      - ./logs:/app/logs
+    environment:
+      - NODE_ENV=production
+      - ACCESS_SECRET="KFC-CRAZY-THURSDAY-VME50"
+      - REFRESH_SECRET="KFC-CRAZY-THURSDAY-VME50"
+      - REDIS_URL=redis://redis:6379
+    # --- 关键：添加标签让 Watchtower 监控它 ---
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    depends_on:
+      - redis
+    networks:
+      - todo-net
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: redis-server
+    networks:
+      - todo-net
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: 
+      - --interval 3600
+      - --cleanup
+      - --label-enable
+    networks:
+      - todo-net
+
+# 定义网络
+networks:
+  todo-net:
+    driver: bridge

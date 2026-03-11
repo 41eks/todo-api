@@ -8,7 +8,7 @@ import { z } from "zod";
 import { refreshTokenCookieOptions, csrfTokenCookieOptions, setAuthCookies } from './cookieSetting.js';
 const accessSecretKey = process.env.ACCESS_SECRET!;
 const refreshSecretKey = process.env.REFRESH_SECRET!;
-
+import { getRedisClient } from '@/db/redisClient.js';
 export async function loginController(req: Request, res: Response) {
     try {
         // 1. Zod 校验
@@ -39,6 +39,16 @@ export async function loginController(req: Request, res: Response) {
         );
 
         const csrfToken = setAuthCookies(res, refreshToken);
+        const client = await getRedisClient();
+        /**
+         * 这里的 Key 设计建议：csrf:{userId}
+         * 过期时间应与 Refresh Token 一致（例如 1 天 = 86400 秒）
+         */
+        const redisKey = `csrf:${result.userId}`;
+        await client.set(redisKey, csrfToken, {
+            EX: 60 * 60 * 24 // 24小时过期
+        });
+
         return res.json({
             status: 200,
             message: "login success",

@@ -1,36 +1,27 @@
+
 services:
   todo-app:
-    image: ghcr.io/41eks/todo-api:latest
+    image: todo:latest
     build: .
     container_name: todo-container
     ports:
       - "8000:3000"
     volumes:
-      # --- 关键修改：映射数据库文件 ---
-      # 左边是宿主机目录 (确保这个文件存在，或者让 Docker 自动创建)
-      # 右边是容器内定义的 dbCredentials.url 路径
-      - ../data/sqlite.db:/app/sqlite.db
-      # ------------------------------
-      # 可选：映射日志和上传目录，保持数据持久化
-      - ../data/logs:/app/logs
+      - ./sqlite.db:/app/sqlite.db
+      - ./logs:/app/logs
     environment:
       - NODE_ENV=production
       - ACCESS_SECRET="KFC-CRAZY-THURSDAY-VME50"
       - REFRESH_SECRET="KFC-CRAZY-THURSDAY-VME50"
-
-    # -----------------------------
+      # 建议通过环境变量传递 Redis 地址
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
     restart: always
 
-# Watchtower 服务
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
+  # --- 新增 Redis 服务 ---
+  redis:
+    image: redis:alpine
+    container_name: redis-server
     restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock  # 必须挂载，用于控制其他容器
-      - /root/.docker/config.json:/config.json:ro  # 如果是私有仓库，需要挂载认证文件
-    command: 
-      - --interval 30           # 每 30 秒检查一次更新（生产环境建议设长一点，如 3600）
-      - --cleanup               # 更新后自动删除旧镜像，释放磁盘空间
-      - --label-enable          # 建议开启：只更新带有特定标签的容器
 

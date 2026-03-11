@@ -12,6 +12,7 @@ services:
       - NODE_ENV=production
       - ACCESS_SECRET="KFC-CRAZY-THURSDAY-VME50"
       - REFRESH_SECRET="KFC-CRAZY-THURSDAY-VME50"
+      - DOMAIN=".rainbowgem.dpdns.org";
       - REDIS_URL=redis://redis:6379
     # --- 关键：添加标签让 Watchtower 监控它 ---
     labels:

@@ -3,7 +3,7 @@ import { CookieOptions } from "express";
 import { NextFunction, Response } from "express";
 
 // 核心修改：指定根域名
-const COMMON_DOMAIN = ".rainbowgem.dpdns.org";
+const COMMON_DOMAIN = process.env.DOMAIN ?? ".rainbowgem.dpdns.org";
 
 export const refreshTokenCookieOptions: CookieOptions = {
     httpOnly: true,          // JS 无法读取（防 XSS）

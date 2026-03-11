@@ -9,7 +9,7 @@ export const refreshTokenCookieOptions: CookieOptions = {
     httpOnly: true,          // JS 无法读取（防 XSS）
     // secure: process.env.NODE_ENV === "production", // 生产必须 https
     secure: true,
-    sameSite: "none",      // 防 CSRF
+    sameSite: "lax",      // 防 CSRF
     maxAge: 24 * 60 * 60 * 1000,// 1天
     domain: COMMON_DOMAIN, // 允许子域名共享
     path: "/api/refresh"
@@ -19,7 +19,7 @@ export const csrfTokenCookieOptions: CookieOptions = {
     httpOnly: false,                                  // ⚠️ 必须 false，前端 JS 需要读
     // secure: process.env.NODE_ENV === "production",
     secure: true,
-    sameSite: "none",
+    sameSite: "lax",
     maxAge: 24 * 60 * 60 * 1000,           // 与 refreshToken 同寿命
     domain: COMMON_DOMAIN, // 允许子域名共享
     path: "/"

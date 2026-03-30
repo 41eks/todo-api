@@ -19,3 +19,16 @@ export function closeDB() {
   sqlite.close();
   console.log('数据库连接已关闭');
 }
+
+import { sql } from 'drizzle-orm';
+// 新增：用于检查数据库状态的轻量级查询
+export function checkConnection() {
+  try {
+    // 执行一个最简单的查询
+    db.run(sql`SELECT 1`); 
+    return true;
+  } catch (error) {
+    console.error('Database health check failed:', error);
+    return false;
+  }
+}
